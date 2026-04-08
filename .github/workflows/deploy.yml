@@ -80,56 +80,17 @@ jobs:
       - name: 📥 拉取代码
         uses: actions/checkout@v4
 
-      - name: 🚀 部署到服务器 (SSH 密钥方式)
-        if: secrets.SSH_PRIVATE_KEY != ''
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            echo "🔄 开始部署..."
-
-            # 进入项目目录（如果不存在则创建）
-            mkdir -p ~/ci-demo
-            cd ~/ci-demo
-
-            # 下载 docker-compose.yml
-            curl -o docker-compose.yml https://raw.githubusercontent.com/${{ github.repository }}/main/docker-compose.yml
-
-            # 登录 Docker Hub
-            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-            # 拉取最新镜像
-            docker pull ${{ env.IMAGE_NAME }}:latest
-
-            # 停止并删除旧容器
-            docker-compose down || true
-
-            # 启动新容器
-            docker-compose up -d
-
-            # 清理旧镜像
-            docker image prune -af
-
-            # 检查容器状态
-            sleep 5
-            docker-compose ps
-            docker-compose logs --tail=20
-
-            echo "✅ 部署完成！"
-
-      - name: 🚀 部署到服务器 (密码方式)
-        if: secrets.SSH_PRIVATE_KEY == ''
+      - name: 🚀 部署到服务器
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "🔄 开始部署..."
 
-            # 进入项目目录
+            # 进入项目目录（如果不存在则创建）
             mkdir -p ~/ci-demo
             cd ~/ci-demo
 
