@@ -197,7 +197,33 @@ ssh user@server 'bash ~/ci-demo/deploy.sh wli007/ci-demo:latest ~/ci-demo'
 
 ## 故障排查
 
-### 问题 1: 镜像拉取超时
+> 💡 **提示**: 对于网络相关问题，请参考详细的 [网络故障排查指南](NETWORK_TROUBLESHOOTING.md)
+
+### 问题 1: Docker Hub 连接超时
+
+**症状**: 
+- `net/http: request canceled while waiting for connection`
+- `Client.Timeout exceeded while awaiting headers`
+- `context deadline exceeded`
+
+**快速解决**: 我们的部署脚本已自动配置镜像加速和重试机制。如果仍然失败：
+
+```bash
+# 1. 检查网络连通性
+ping registry-1.docker.io
+
+# 2. 手动测试登录
+timeout 60 docker login
+
+# 3. 测试镜像拉取
+timeout 300 docker pull your-image:latest
+```
+
+**详细解决方案**: 参考 [网络故障排查指南](NETWORK_TROUBLESHOOTING.md)
+
+---
+
+### 问题 2: 镜像拉取超时
 
 **症状**: `context deadline exceeded`
 
@@ -217,7 +243,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart docker
 ```
 
-### 问题 2: 端口被占用
+### 问题 3: 端口被占用
 
 **症状**: `bind: address already in use`
 
@@ -232,7 +258,7 @@ sudo docker stop <container-id>
 sudo kill <pid>
 ```
 
-### 问题 3: 容器健康检查失败
+### 问题 4: 容器健康检查失败
 
 **症状**: 容器启动后立即退出
 
@@ -248,7 +274,7 @@ docker inspect ci-demo-app
 docker exec -it ci-demo-app sh
 ```
 
-### 问题 4: 磁盘空间不足
+### 问题 5: 磁盘空间不足
 
 **症状**: `no space left on device`
 
@@ -266,7 +292,7 @@ docker container prune -f   # 清理容器
 docker volume prune -f      # 清理卷
 ```
 
-### 问题 5: SSH 连接失败
+### 问题 6: SSH 连接失败
 
 **症状**: `Permission denied` 或 `Connection timeout`
 

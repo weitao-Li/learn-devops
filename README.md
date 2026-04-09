@@ -143,6 +143,7 @@ graph LR
 - 📖 [快速开始指南](docs/QUICKSTART.md) - 5分钟上手
 - 🚀 [完整部署文档](docs/DEPLOYMENT.md) - 详细说明、故障排查、最佳实践
 - ⚡ [优化详解](docs/OPTIMIZATION.md) - 优化前后对比、性能分析
+- 🌐 [网络故障排查](docs/NETWORK_TROUBLESHOOTING.md) - Docker Hub 连接问题解决方案
 
 ## 🔧 使用方式
 
@@ -216,11 +217,12 @@ docker inspect ci-demo-app
 
 | 问题 | 解决方案 | 文档链接 |
 |-----|---------|----------|
+| Docker Hub 连接超时 | 镜像加速 + 重试机制 | [链接](docs/NETWORK_TROUBLESHOOTING.md) |
 | SSH 连接失败 | 检查密钥配置 | [链接](docs/QUICKSTART.md#问题1) |
-| 镜像拉取超时 | 配置镜像加速 | [链接](docs/DEPLOYMENT.md#问题1) |
-| 端口被占用 | 修改端口或停止冲突服务 | [链接](docs/DEPLOYMENT.md#问题2) |
-| 健康检查失败 | 查看容器日志 | [链接](docs/DEPLOYMENT.md#问题3) |
-| 磁盘空间不足 | 清理旧资源 | [链接](docs/DEPLOYMENT.md#问题4) |
+| 镜像拉取超时 | 配置镜像加速 | [链接](docs/DEPLOYMENT.md#问题2) |
+| 端口被占用 | 修改端口或停止冲突服务 | [链接](docs/DEPLOYMENT.md#问题3) |
+| 健康检查失败 | 查看容器日志 | [链接](docs/DEPLOYMENT.md#问题4) |
+| 磁盘空间不足 | 清理旧资源 | [链接](docs/DEPLOYMENT.md#问题5) |
 
 完整故障排查指南: [DEPLOYMENT.md](docs/DEPLOYMENT.md#故障排查)
 

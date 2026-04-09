@@ -128,7 +128,36 @@ EOF
 # 如果是首次部署，配置镜像加速
 if [ ! -f .deploy_initialized ]; then
     configure_docker_mirror
+
+    # 等待 Docker 服务完全就绪
+    log_info "等待 Docker 服务就绪..."
+    for i in {1..30}; do
+        if docker info >/dev/null 2>&1; then
+            log_success "Docker 服务已就绪"
+            break
+        fi
+        echo -n "."
+        sleep 2
+    done
+    echo ""
+
     touch .deploy_initialized
+fi
+
+# Docker Hub 登录（如果提供了凭证）
+if [ -n "${DOCKER_USERNAME:-}" ] && [ -n "${DOCKER_PASSWORD:-}" ]; then
+    log_info "登录 Docker Hub..."
+
+    login_docker() {
+        echo "$DOCKER_PASSWORD" | timeout 60 docker login -u "$DOCKER_USERNAME" --password-stdin
+    }
+
+    if retry_command login_docker; then
+        log_success "Docker Hub 登录成功"
+    else
+        log_error "Docker Hub 登录失败"
+        log_warning "将尝试继续（如果镜像是公开的）"
+    fi
 fi
 
 # 保存当前状态用于回滚
