@@ -137,6 +137,9 @@ jobs:
               sudo tee /etc/docker/daemon.json > /dev/null <<EOF
             {
               "registry-mirrors": [
+                "https://docker.1ms.run",
+                "https://hub-mirror.c.163.com",
+                "https://mirror.baidubce.com",
                 "https://0vmzj3q6.mirror.aliyuncs.com",
                 "https://docker.m.daocloud.io",
                 "https://mirror.baidubce.com",
