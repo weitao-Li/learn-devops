@@ -9,12 +9,31 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
+      - TZ=Asia/Shanghai
+    # 资源限制
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    # 健康检查
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    # 日志配置
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # 标签
     labels:
       - "com.example.description=CI/CD Demo App"
       - "com.example.version=1.0"
+      - "com.example.environment=production"
