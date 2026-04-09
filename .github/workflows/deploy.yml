@@ -137,8 +137,15 @@ jobs:
               sudo tee /etc/docker/daemon.json > /dev/null <<EOF
             {
               "registry-mirrors": [
+                "https://0vmzj3q6.mirror.aliyuncs.com",
                 "https://docker.m.daocloud.io",
-                "https://mirror.ccs.tencentyun.com"
+                "https://mirror.baidubce.com",
+                "https://dockerproxy.com",
+                "https://mirror.iscas.ac.cn",
+                "https://huecker.io",
+                "https://dockerhub.timeweb.cloud",
+                "https://noohub.ru",
+                "https://vlgh0kqj.mirror.aliyuncs.com",
               ],
               "max-concurrent-downloads": 10
             }
